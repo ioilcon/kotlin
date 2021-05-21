@@ -47,7 +47,11 @@ fun digitsNotSimpleSum(number : Int) = digitsProcessing(number, 0, {a, b -> a + 
 fun digitsCount3(number : Int) = digitsProcessing(number, 0, {a, b -> a + 1}, {a -> a < 3})
 
 fun smtnStrange(number : Int) : Int = smtnStrange(number, 2, digitsProcessing(number, 0, {a, b -> a + b}, {a -> isSimple(a)}), 0)
-tailrec fun smtnStrange(numberInt : Int, current : Int, simpleDigitsSum : Int, accumulator : Int) = 5
+tailrec fun smtnStrange(number : Int, current : Int, simpleDigitsSum : Int, accumulator : Int) : Int = when {
+    current == number -> accumulator
+    number % current != 0 && GCD(current, number) != 1 && GCD(current, simpleDigitsSum) == 1 -> smtnStrange(number, current + 1, simpleDigitsSum, accumulator + 1)
+    else -> smtnStrange(number, current + 1, simpleDigitsSum, accumulator)
+}
 tailrec fun digitsProcessing(number : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean) : Int =
     if (number == 0) accumulator else
         digitsProcessing(number / 10, if (pr(number % 10)) func(number % 10, accumulator) else accumulator, func, pr)
