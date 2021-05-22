@@ -2,6 +2,7 @@ import kotlin.math.sqrt
 import kotlin.math.max
 import kotlin.math.min
 import java.util.Scanner;
+import java.math.BigInteger;
 
 //1, 2
 fun helloWorld() = println("Hello Word")
@@ -65,6 +66,15 @@ tailrec fun funSelector() {
     funSelector()
 }
 
+//10 - 16
+fun digits2in1000() : Int {
+    val number = BigInteger.ONE.shiftLeft(1000).toString()
+    return charsProcedding(number, 0, 0, {a, b -> a+b}, {_ -> true})
+}
+
+//10 - 36
+fun palindromeSum
+
 fun isSimple(number : Int) : Boolean = isSimple(number, 2, sqrt(number.toDouble()))
 tailrec fun isSimple(number : Int, current : Int, border : Double) : Boolean = when {
     current > border -> true
@@ -82,6 +92,11 @@ tailrec fun digitsProcessing(number : Int, accumulator : Int, func : (Int, Int) 
     if (number == 0) accumulator else
         digitsProcessing(number / 10, if (pr(number % 10)) func(number % 10, accumulator) else accumulator, func, pr)
 
+tailrec fun charsProcedding(str : String, index : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean) : Int =
+    if(index == str.length) accumulator else
+        charsProcedding(str, index + 1, if (pr(str[index] - '0')) func(str[index] - '0', accumulator) else accumulator, func, pr)
+
 fun main() {
-    funSelector()
+    //funSelector()
+    println(digits2in1000())
 }
