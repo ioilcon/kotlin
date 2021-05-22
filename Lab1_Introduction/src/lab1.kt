@@ -21,6 +21,7 @@ fun helloUser(name : String) {
 
 //6
 fun digitsSum(number : Int) = digitsProcessing(number, 0, {a, b -> a + b}, {_ -> true})
+fun digitsSum(number : BigInteger) = digitsProcessing(number, 0, {a, b -> a + b}, {_ -> true})
 
 //7
 fun digitsMax(number : Int) = digitsProcessing(number, 0, {a, b -> if (a > b) a else b}, {_ -> true})
@@ -80,6 +81,21 @@ tailrec  fun palindromeSum(current : Int, border : Int, sum: Long) : Long = when
     else -> palindromeSum(current + 1, border, sum)
 }
 
+//10 - 56
+fun max100in100() = max100in100(1, 0)
+tailrec fun max100in100(current : Int, max : Int) : Int = when {
+    current > 100 -> max
+    aIn100(current) > max -> max100in100(current + 1, aIn100(current))
+    else -> max100in100(current + 1, max)
+}
+
+fun aIn100(a : Int) = aIn100(a, 0, 1, a.toBigInteger())
+tailrec fun aIn100(a : Int, max : Int, pow : Int, current: BigInteger) : Int = when {
+    pow > 100 -> max
+    digitsSum(current * a.toBigInteger()) > max -> aIn100(a, digitsSum(current * a.toBigInteger()), pow + 1, current * a.toBigInteger())
+    else -> aIn100(a, max, pow + 1, current * a.toBigInteger())
+}
+
 fun isSimple(number : Int) : Boolean = isSimple(number, 2, sqrt(number.toDouble()))
 tailrec fun isSimple(number : Int, current : Int, border : Double) : Boolean = when {
     current > border -> true
@@ -104,12 +120,17 @@ tailrec fun digitsProcessing(number : Int, accumulator : Int, func : (Int, Int) 
     if (number == 0) accumulator else
         digitsProcessing(number / 10, if (pr(number % 10)) func(number % 10, accumulator) else accumulator, func, pr)
 
+tailrec fun digitsProcessing(number : BigInteger, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean) : Int =
+    if (number == BigInteger.ZERO) accumulator else
+        digitsProcessing(number / BigInteger.TEN, if (pr((number % BigInteger.TEN).toInt())) func((number % BigInteger.TEN).toInt(), accumulator) else accumulator, func, pr)
+
 tailrec fun charsProcedding(str : String, index : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean) : Int =
     if(index == str.length) accumulator else
         charsProcedding(str, index + 1, if (pr(str[index] - '0')) func(str[index] - '0', accumulator) else accumulator, func, pr)
 
 fun main() {
     //funSelector()
-    println(digits2in1000())
-    println(palindromeSum())
+    //println(digits2in1000())
+    //println(palindromeSum())
+    println(max100in100())
 }
