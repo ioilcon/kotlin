@@ -54,13 +54,22 @@ tailrec fun funSelector() {
         "3", "5" -> helloUser("User")
         "4" -> println("(-_-|)")
         "6" -> println("digitsSum: ${digitsSum(number)}")
-        "7" -> {println("digitsMax: ${digitsMax(number)}")
-                println("digitsMin: ${digitsMin(number)}")
-                println("digitsMul: ${digitsMul(number)}")}
-        "8" -> {println("digitsNotSimpleSum: ${digitsNotSimpleSum(number)}")
-                println("digitsCount3: ${digitsCount3(number)}")
-                println("smtnStrange: ${smtnStrange(number)}")}
+        "7" -> {
+            println("digitsMax: ${digitsMax(number)}")
+            println("digitsMin: ${digitsMin(number)}")
+            println("digitsMul: ${digitsMul(number)}")
+        }
+        "8" -> {
+            println("digitsNotSimpleSum: ${digitsNotSimpleSum(number)}")
+            println("digitsCount3: ${digitsCount3(number)}")
+            println("smtnStrange: ${smtnStrange(number)}")
+        }
         "9" -> println("(|-_-)")
+        "10" -> {
+            println("digits2in1000: ${digits2in1000()}")
+            println("palindromeSum: ${palindromeSum()}")
+            println("max100in100: ${max100in100()}")
+        }
         "0" -> return
         else -> println("|o_o|?")
     }
@@ -129,8 +138,5 @@ tailrec fun charsProcedding(str : String, index : Int, accumulator : Int, func :
         charsProcedding(str, index + 1, if (pr(str[index] - '0')) func(str[index] - '0', accumulator) else accumulator, func, pr)
 
 fun main() {
-    //funSelector()
-    //println(digits2in1000())
-    //println(palindromeSum())
-    println(max100in100())
+    funSelector()
 }
