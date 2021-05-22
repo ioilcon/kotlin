@@ -73,13 +73,25 @@ fun digits2in1000() : Int {
 }
 
 //10 - 36
-fun palindromeSum
+fun palindromeSum() = palindromeSum(1, 1000000, 0)
+tailrec  fun palindromeSum(current : Int, border : Int, sum: Long) : Long = when {
+    current == border -> sum
+    isPalindrome(current.toString()) && isPalindrome(current.toString(2)) -> palindromeSum(current + 1, border, sum + current)
+    else -> palindromeSum(current + 1, border, sum)
+}
 
 fun isSimple(number : Int) : Boolean = isSimple(number, 2, sqrt(number.toDouble()))
 tailrec fun isSimple(number : Int, current : Int, border : Double) : Boolean = when {
     current > border -> true
     number % current == 0 -> false
     else -> isSimple(number, current + 1, border)
+}
+
+fun isPalindrome(number : String) : Boolean = isPalindrome(number, 0, number.length / 2)
+tailrec fun isPalindrome(number : String, current : Int, border : Int) : Boolean = when {
+    current == border -> true
+    number[current] != number[number.length - current - 1] -> false
+    else -> isPalindrome(number, current + 1, border)
 }
 
 fun GCD(first : Int, second : Int) : Int = when {
@@ -99,4 +111,5 @@ tailrec fun charsProcedding(str : String, index : Int, accumulator : Int, func :
 fun main() {
     //funSelector()
     println(digits2in1000())
+    println(palindromeSum())
 }
