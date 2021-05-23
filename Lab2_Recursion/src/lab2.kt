@@ -60,7 +60,7 @@ fun op(op : Char) : (Int, Int) -> Int = when (op) {
 }
 
 //9 - 16
-fun digits2in1000() : Int = charsProcessing(BigInteger.ONE.shiftLeft(1000).toString(), 0, 0, {a, b -> a+b}, {_ -> true})
+fun digits2in1000() : Int = charsProcessing(BigInteger.ONE.shiftLeft(1000).toString(), 0, 0, {a, b -> a+b})
 
 //9 - 36
 fun palindromeSum() = palindromeSum(1, 1000000, 0)
@@ -81,7 +81,7 @@ tailrec fun max100in100(current : Int, max : Int) : Int = when {
 fun aIn100(a : Int) = aIn100(a, 0, 1, a.toBigInteger())
 tailrec fun aIn100(a : Int, max : Int, pow : Int, current: BigInteger) : Int = when {
     pow > 100 -> max
-    digitsProcessingDown(current * a.toBigInteger(), 0, { a, b -> a + b}) > max -> aIn100(a, digitsProcessingDown(current * a.toBigInteger(), 0, { a, b -> a + b}), pow + 1, current * a.toBigInteger())
+    digitsProcessingDown(current * a.toBigInteger(), 0, {a, b -> a + b}) > max -> aIn100(a, digitsProcessingDown(current * a.toBigInteger(), 0, {a, b -> a + b}), pow + 1, current * a.toBigInteger())
     else -> aIn100(a, max, pow + 1, current * a.toBigInteger())
 }
 
