@@ -24,6 +24,16 @@ fun digitsMaxDown(number : Int) = digitsProcessingDown(number, 0, {a, b -> if(a 
 //5 - digitsProcessingUp и digitsProcessingDown с 4мя аргументами выполняют заданный функционал
 
 //6
+// Делит число на все его ненулевые цифры (остаток отбрасывается)
+fun test1(number : Int) = digitsProcessingDown(number, number, {a, b -> b / a}, {a -> a != 0})
+
+// Считает количество чётных цифр в числе
+fun test2(number : Int) = digitsProcessingDown(number, 0, {_, b -> b + 1}, {a -> a % 2 == 0})
+
+// Разворачивает число (да, без условния :( )
+fun test3(number : Int) = digitsProcessingDown(number, 0, {a, b -> b * 10 + a})
+
+//7
 
 fun digitsProcessingUp(number : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean = {_ -> true}) : Int =
     when {
@@ -40,5 +50,7 @@ fun main() {
     print("Insert number: ")
     val input = Scanner(System.`in`)
     val number : Int = input.nextInt()
-    println(digitsSumUp(number))
+    println(test1(number))
+    println(test2(number))
+    println(test3(number))
 }
