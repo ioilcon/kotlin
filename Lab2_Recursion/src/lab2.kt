@@ -1,4 +1,7 @@
 import java.util.Scanner;
+import kotlin.math.sqrt
+import kotlin.math.min
+import kotlin.math.max
 
 //1
 fun digitsSumUp(number : Int) = digitsProcessingUp(number, 0, {a, b -> a + b})
@@ -35,6 +38,19 @@ fun test3(number : Int) = digitsProcessingDown(number, 0, {a, b -> b * 10 + a})
 
 //7
 
+fun digitsNotSimpleSum(number : Int) = digitsProcessingDown(number, 0, {a, b -> a + b}, {a -> !isSimple(a)})
+
+fun digitsCount3(number : Int) = digitsProcessingDown(number, 0, {_, b -> b + 1}, {a -> a < 3})
+
+fun smtnStrange(number : Int) : Int = smtnStrange(number, 2, digitsProcessingDown(number, 0, {a, b -> a + b}, {a -> isSimple(a)}), 0)
+tailrec fun smtnStrange(number : Int, current : Int, simpleDigitsSum : Int, accumulator : Int) : Int = when {
+    current == number -> accumulator
+    number % current != 0 && GCD(current, number) != 1 && GCD(current, simpleDigitsSum) == 1 -> smtnStrange(number, current + 1, simpleDigitsSum, accumulator + 1)
+    else -> smtnStrange(number, current + 1, simpleDigitsSum, accumulator)
+}
+
+//8
+
 fun digitsProcessingUp(number : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean = {_ -> true}) : Int =
     when {
         number == 0 -> accumulator
@@ -45,6 +61,19 @@ fun digitsProcessingUp(number : Int, accumulator : Int, func : (Int, Int) -> Int
 tailrec fun digitsProcessingDown(number : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean = {_ -> true}) : Int =
     if (number == 0) accumulator else
         digitsProcessingDown(number / 10, if (pr(number % 10)) func(number % 10, accumulator) else accumulator, func, pr)
+
+fun isSimple(number : Int) : Boolean = isSimple(number, 2, sqrt(number.toDouble()))
+tailrec fun isSimple(number : Int, current : Int, border : Double) : Boolean = when {
+    current > border -> true
+    number % current == 0 -> false
+    else -> isSimple(number, current + 1, border)
+}
+
+fun GCD(first : Int, second : Int) : Int = when {
+    first == second -> first
+    first == 0 || second == 0 -> 0
+    else -> GCD(max(first, second) - min(first, second), min(first, second))
+}
 
 fun main() {
     print("Insert number: ")
