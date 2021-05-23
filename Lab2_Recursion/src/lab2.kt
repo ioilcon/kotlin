@@ -37,7 +37,6 @@ fun test2(number : Int) = digitsProcessingDown(number, 0, {_, b -> b + 1}, {a ->
 fun test3(number : Int) = digitsProcessingDown(number, 0, {a, b -> b * 10 + a})
 
 //7
-
 fun digitsNotSimpleSum(number : Int) = digitsProcessingDown(number, 0, {a, b -> a + b}, {a -> !isSimple(a)})
 
 fun digitsCount3(number : Int) = digitsProcessingDown(number, 0, {_, b -> b + 1}, {a -> a < 3})
@@ -50,6 +49,14 @@ tailrec fun smtnStrange(number : Int, current : Int, simpleDigitsSum : Int, accu
 }
 
 //8
+fun op(op : Char) : (Int, Int) -> Int = when (op) {
+    '+' -> {a, b -> a + b}
+    '-' -> {a, b -> a - b}
+    '*' -> {a, b -> a * b}
+    '/' -> {a, b -> if (b != 0) a / b else throw IllegalArgumentException("Unknown operation")}
+    '%' -> {a, b -> if (b != 0) a % b else throw IllegalArgumentException("Unknown operation")}
+    else -> throw IllegalArgumentException("Unknown operation")
+}
 
 fun digitsProcessingUp(number : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean = {_ -> true}) : Int =
     when {
