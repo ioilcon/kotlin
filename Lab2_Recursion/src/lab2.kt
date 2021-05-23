@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.math.BigInteger;
 import kotlin.math.sqrt
 import kotlin.math.min
 import kotlin.math.max
@@ -7,7 +8,7 @@ import kotlin.math.max
 fun digitsSumUp(number : Int) = digitsProcessingUp(number, 0, {a, b -> a + b})
 
 //2
-fun digitsDumDown(number : Int) = digitsProcessingDown(number, 0, {a, b -> a + b})
+fun digitsSumDown(number : Int) = digitsProcessingDown(number, 0, {a, b -> a + b})
 
 //3
 fun digitsMulUp(number : Int) = digitsProcessingUp(number, 1, {a, b -> a * b})
@@ -58,6 +59,32 @@ fun op(op : Char) : (Int, Int) -> Int = when (op) {
     else -> throw IllegalArgumentException("Unknown operation")
 }
 
+//9 - 16
+fun digits2in1000() : Int = charsProcessing(BigInteger.ONE.shiftLeft(1000).toString(), 0, 0, {a, b -> a+b}, {_ -> true})
+
+//9 - 36
+fun palindromeSum() = palindromeSum(1, 1000000, 0)
+tailrec  fun palindromeSum(current : Int, border : Int, sum: Long) : Long = when {
+    current == border -> sum
+    isPalindrome(current.toString()) && isPalindrome(current.toString(2)) -> palindromeSum(current + 1, border, sum + current)
+    else -> palindromeSum(current + 1, border, sum)
+}
+
+//9 - 56
+fun max100in100() = max100in100(1, 0)
+tailrec fun max100in100(current : Int, max : Int) : Int = when {
+    current > 100 -> max
+    aIn100(current) > max -> max100in100(current + 1, aIn100(current))
+    else -> max100in100(current + 1, max)
+}
+
+fun aIn100(a : Int) = aIn100(a, 0, 1, a.toBigInteger())
+tailrec fun aIn100(a : Int, max : Int, pow : Int, current: BigInteger) : Int = when {
+    pow > 100 -> max
+    digitsProcessingDown(current * a.toBigInteger(), 0, { a, b -> a + b}) > max -> aIn100(a, digitsProcessingDown(current * a.toBigInteger(), 0, { a, b -> a + b}), pow + 1, current * a.toBigInteger())
+    else -> aIn100(a, max, pow + 1, current * a.toBigInteger())
+}
+
 fun digitsProcessingUp(number : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean = {_ -> true}) : Int =
     when {
         number == 0 -> accumulator
@@ -68,6 +95,14 @@ fun digitsProcessingUp(number : Int, accumulator : Int, func : (Int, Int) -> Int
 tailrec fun digitsProcessingDown(number : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean = {_ -> true}) : Int =
     if (number == 0) accumulator else
         digitsProcessingDown(number / 10, if (pr(number % 10)) func(number % 10, accumulator) else accumulator, func, pr)
+
+tailrec fun digitsProcessingDown(number : BigInteger, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean = {_ -> true}) : Int =
+    if (number == BigInteger.ZERO) accumulator else
+        digitsProcessingDown(number / BigInteger.TEN, if (pr((number % BigInteger.TEN).toInt())) func((number % BigInteger.TEN).toInt(), accumulator) else accumulator, func, pr)
+
+tailrec fun charsProcessing(str : String, index : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean = {_ -> true}) : Int =
+    if(index == str.length) accumulator else
+        charsProcessing(str, index + 1, if (pr(str[index] - '0')) func(str[index] - '0', accumulator) else accumulator, func, pr)
 
 fun isSimple(number : Int) : Boolean = isSimple(number, 2, sqrt(number.toDouble()))
 tailrec fun isSimple(number : Int, current : Int, border : Double) : Boolean = when {
@@ -82,6 +117,13 @@ fun GCD(first : Int, second : Int) : Int = when {
     else -> GCD(max(first, second) - min(first, second), min(first, second))
 }
 
+fun isPalindrome(number : String) : Boolean = isPalindrome(number, 0, number.length / 2)
+tailrec fun isPalindrome(number : String, current : Int, border : Int) : Boolean = when {
+    current == border -> true
+    number[current] != number[number.length - current - 1] -> false
+    else -> isPalindrome(number, current + 1, border)
+}
+
 fun main() {
     print("Insert number: ")
     val input = Scanner(System.`in`)
@@ -89,4 +131,7 @@ fun main() {
     println(test1(number))
     println(test2(number))
     println(test3(number))
+    println(digits2in1000())
+    println(palindromeSum())
+    println(max100in100())
 }
