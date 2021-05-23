@@ -7,6 +7,19 @@ fun digitsSumUp(number : Int) = digitsProcessingUp(number, 0, {a, b -> a + b}, {
 fun digitsDumDown(number : Int) = digitsProcessingDown(number, 0, {a, b -> a + b}, {_ -> true})
 
 //3
+fun digitsMulUp(number : Int) = digitsProcessingUp(number, 1, {a, b -> a * b}, {_ -> true})
+
+fun digitsMinUp(number : Int) = digitsProcessingUp(number, 9, {a, b -> if(a < b) a else b}, {_ -> true})
+
+fun digitsMaxUp(number : Int) = digitsProcessingUp(number, 0, {a, b -> if(a > b) a else b}, {_ -> true})
+
+fun digitsMulDown(number : Int) = digitsProcessingDown(number, 1, {a, b -> a * b}, {_ -> true})
+
+fun digitsMinDown(number : Int) = digitsProcessingDown(number, 9, {a, b -> if(a < b) a else b}, {_ -> true})
+
+fun digitsMaxDown(number : Int) = digitsProcessingDown(number, 0, {a, b -> if(a > b) a else b}, {_ -> true})
+
+//4
 
 fun digitsProcessingUp(number : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean) : Int =
     when {
