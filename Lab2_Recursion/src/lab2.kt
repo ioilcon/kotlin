@@ -19,9 +19,11 @@ fun digitsMinDown(number : Int) = digitsProcessingDown(number, 9, {a, b -> if(a 
 
 fun digitsMaxDown(number : Int) = digitsProcessingDown(number, 0, {a, b -> if(a > b) a else b})
 
-//4 - digitsProcessingUp и digitsProcessingDown выполнябт заданный функционал
+//4 - digitsProcessingUp и digitsProcessingDown с 3мя аргументами выполняют заданный функционал
 
-//5
+//5 - digitsProcessingUp и digitsProcessingDown с 4мя аргументами выполняют заданный функционал
+
+//6
 
 fun digitsProcessingUp(number : Int, accumulator : Int, func : (Int, Int) -> Int, pr : (Int) -> Boolean = {_ -> true}) : Int =
     when {
